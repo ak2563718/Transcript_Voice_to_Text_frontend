@@ -1,7 +1,7 @@
 import { Button } from "../ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Badge } from "../ui/badge";
-import { VoiceTranscript } from "./VoiceTranscript";
+import  VoiceTranscript  from "./VoiceTranscript";
 import { Mic, Zap, Globe, Lock, Code, Sparkles } from "lucide-react";
 
 export default function LandingPage() {

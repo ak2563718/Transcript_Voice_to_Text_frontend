@@ -1,77 +1,72 @@
+'use client'
 import { useEffect, useRef, useState } from "react";
 
-function App() {
-  const socketRef = useRef(null);
-  const mediaRecorderRef = useRef(null);
+function VoiceTranscript() {
+ const socketRef = useRef<WebSocket | null>(null);
+const mediaRecorderRef = useRef<MediaRecorder | null>(null); // ✅ fix 1: was WebSocket
 
-  const [isRecording, setIsRecording] = useState(false);
-  const [transcript, setTranscript] = useState("");
+const [isRecording, setIsRecording] = useState(false);
+const [transcript, setTranscript] = useState("");
 
-  useEffect(() => {
-    // websocket connection
-    socketRef.current = new WebSocket("ws://localhost:5000");
+useEffect(() => {
+  socketRef.current = new WebSocket("ws://localhost:5000");
 
-    socketRef.current.onopen = () => {
-      console.log("WebSocket Connected");
-    };
+  socketRef.current.onopen = () => {
+    console.log("WebSocket Connected");
+  };
 
-    socketRef.current.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-
-      if (data.transcript) {
-        setTranscript((prev) => prev + data.transcript);
-      }
-    };
-
-    socketRef.current.onclose = () => {
-      console.log("WebSocket Closed");
-    };
-
-    return () => {
-      socketRef.current.close();
-    };
-  }, []);
-
-  const startRecording = async () => {
-    try {
-      // FIRST TIME browser asks mic permission
-      const stream = await navigator.mediaDevices.getUserMedia({
-        audio: true,
-      });
-
-      const mediaRecorder = new MediaRecorder(stream, {
-        mimeType: "audio/webm",
-      });
-
-      mediaRecorderRef.current = mediaRecorder;
-
-      mediaRecorder.ondataavailable = async (event) => {
-        if (event.data.size > 0) {
-          const arrayBuffer = await event.data.arrayBuffer();
-
-          // send audio chunk to websocket server
-          socketRef.current.send(arrayBuffer);
-        }
-      };
-
-      // send chunk every 1 second
-      mediaRecorder.start(1000);
-
-      setIsRecording(true);
-
-      console.log("Recording Started");
-    } catch (error) {
-      console.log("Microphone Permission Denied", error);
+  socketRef.current.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    if (data.transcript) {
+      setTranscript((prev) => prev + data.transcript);
     }
   };
 
-  const stopRecording = () => {
-    mediaRecorderRef.current.stop();
-
-    setIsRecording(false);
-
-    console.log("Recording Stopped");
+  socketRef.current.onclose = () => {
+    console.log("WebSocket Closed");
   };
+
+  return () => {
+    socketRef.current?.close(); // ✅ fix 2: optional chaining
+  };
+}, []);
+
+const startRecording = async () => {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+    const mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
+    mediaRecorderRef.current = mediaRecorder;
+
+    mediaRecorder.ondataavailable = async (event) => {
+      if (
+        event.data.size > 0 &&
+        socketRef.current?.readyState === WebSocket.OPEN // ✅ fix 3: null + state guard
+      ) {
+        const arrayBuffer = await event.data.arrayBuffer();
+        socketRef.current.send(arrayBuffer);
+      }
+    };
+
+    mediaRecorder.start(1000);
+    setIsRecording(true);
+    console.log("Recording Started");
+  } catch (error) {
+    console.log("Microphone Permission Denied", error);
+  }
+};
+
+const stopRecording = () => {
+  if (!mediaRecorderRef.current) return; // ✅ fix 3: null guard
+
+  mediaRecorderRef.current.stop();
+
+  // also stop mic tracks to release the mic indicator
+  mediaRecorderRef.current.stream.getTracks().forEach((t) => t.stop());
+
+  setIsRecording(false);
+  console.log("Recording Stopped");
+};
 
   return (
     <div
@@ -122,4 +117,4 @@ function App() {
   );
 }
 
-export default App;
+export default VoiceTranscript;
