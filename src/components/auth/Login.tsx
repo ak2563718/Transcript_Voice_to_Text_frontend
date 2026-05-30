@@ -102,7 +102,7 @@ export default function Login() {
             </Box>
 
             <form onSubmit={handleLogin}>
-              <Box className="space-y-5">
+              <Box className="space-y-5 ">
                 <Box>
                   <Typography variant="body2" className="text-gray-700 mb-2 font-medium">
                     Email address
@@ -164,7 +164,8 @@ export default function Login() {
                         },
                       },
                     }}
-                    InputProps={{
+                    slotProps={{
+                      input:{
                       endAdornment: (
                         <InputAdornment position="end">
                           <IconButton
@@ -176,6 +177,7 @@ export default function Login() {
                           </IconButton>
                         </InputAdornment>
                       ),
+                    }
                     }}
                   />
                 </Box>
@@ -242,10 +244,6 @@ export default function Login() {
               </Box>
             </form>
           </Box>
-
-          <Typography variant="body2" className="text-center text-gray-500 mt-8">
-            Protected by enterprise-grade encryption
-          </Typography>
         </motion.div>
       </Box>
     </Box>

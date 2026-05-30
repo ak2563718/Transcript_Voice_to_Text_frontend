@@ -1,58 +1,45 @@
-import { FileText, Search, Settings, User, Upload, Home, FileAudio } from 'lucide-react';
+'use client'
+import { Mic } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-export function Navbar() {
+export default function Navbar() {
+  const router = useRouter()
   return (
-    <nav className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 shadow-lg">
-      <div className="max-w-7xl mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-10">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-white/20 rounded-xl backdrop-blur-sm">
-                <FileAudio className="size-6 text-white" />
+    <div className="size-full bg-slate-50">
+      <nav className="bg-white border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo/Brand */}
+            <div className="flex items-center gap-2">
+              <div className="bg-gradient-to-br from-blue-600 to-indigo-600 p-2 rounded-lg">
+                <Mic className="w-5 h-5 text-white" />
               </div>
-              <span className="font-bold text-xl text-white">TranscriptHub</span>
+              <span className="text-xl font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                TranscribeX
+              </span>
             </div>
 
-            <div className="hidden md:flex items-center gap-2">
-              <a href="#" className="flex items-center gap-2 px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition-all">
-                <Home className="size-4" />
-                <span>Home</span>
+            {/* Navigation Items */}
+            <div className="flex items-center gap-8">
+              <a
+                href="/"
+                className="text-slate-600 hover:text-slate-900 transition-colors"
+              >
+                Home
               </a>
-              <a href="#" className="flex items-center gap-2 px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition-all">
-                <FileText className="size-4" />
-                <span>My Transcripts</span>
+              <a
+              href="/transcript"
+              className="text-slate-600 hover:text-slate-900 transition-colors"
+              >
+                Transcript
               </a>
-              <a href="#" className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 text-white backdrop-blur-sm hover:bg-white/20 transition-all">
-                <Upload className="size-4" />
-                <span>Upload</span>
-              </a>
+              <button onClick={()=>router.push('/login')} className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-2 rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-200">
+                Get Started
+              </button>
             </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="hidden lg:flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg backdrop-blur-sm">
-              <Search className="size-4 text-white/70" />
-              <input
-                type="text"
-                placeholder="Search transcripts..."
-                className="bg-transparent border-none outline-none text-white placeholder-white/50 w-48"
-              />
-            </div>
-
-            <button className="p-2.5 rounded-lg hover:bg-white/10 transition-colors lg:hidden">
-              <Search className="size-5 text-white" />
-            </button>
-
-            <button className="p-2.5 rounded-lg hover:bg-white/10 transition-colors">
-              <Settings className="size-5 text-white" />
-            </button>
-
-            <button className="p-2.5 rounded-lg bg-white/20 hover:bg-white/30 transition-colors">
-              <User className="size-5 text-white" />
-            </button>
           </div>
         </div>
+      </nav>
       </div>
-    </nav>
   );
 }
