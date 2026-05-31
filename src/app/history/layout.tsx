@@ -1,19 +1,19 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { ReactNode } from "react";
+import { Children, ReactNode } from "react";
 
 type Props ={
     children :ReactNode;
 }
-
-export default function Pagelayout({children}:Props){
-    return (
+export default function PageLayout({children}:Props){
+    return(
         <>
         <Navbar/>
         <div>
             {children}
         </div>
-        <Footer/>
+            <Footer />
+      
         </>
     )
 }

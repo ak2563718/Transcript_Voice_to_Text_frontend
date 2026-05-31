@@ -1,26 +1,40 @@
 'use client'
 import { useState, useRef, useEffect } from 'react';
 import { Mic, MicOff } from 'lucide-react';
-import { socket } from '@/socket';
+import { io, Socket } from 'socket.io-client'
+import { useAppSelector, useAppDispatch } from '@/redux/hook';
+import { check_session } from '@/redux/feature/auth/authAction';
 
 export default function VoiceRecorder() {
+  const dispatch = useAppDispatch()
+  const { accessToken } = useAppSelector((state)=>state.auth)
   const [isRecording, setIsRecording] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [interimTranscript, setInterimTranscript] = useState('');
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const socketRef = useRef<Socket | null>(null)
+
+  useEffect(()=>{
+    dispatch(check_session())
+  },[])
 
   useEffect(() => {
-    socket.on("transcript", (data) => {
+    socketRef.current = io('http://localhost:4000',{
+    auth:{
+        token:accessToken,  
+    }
+    })
+    socketRef.current.on("transcript", (data) => {
       setTranscript((prev) => prev + " " + data.text);
     });
 
     return () => {
-      socket.off("transcript");
+      socketRef.current?.off("transcript");
     };
   }, []);
 
  const startRecording = async () => {
-    socket.emit("recording-start")
+    socketRef.current?.emit("recording-start")
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: true,
     });
@@ -33,7 +47,7 @@ export default function VoiceRecorder() {
       if (event.data.size > 0) {
         const arrayBuffer = await event.data.arrayBuffer();
 
-        socket.emit("audio-chunk", arrayBuffer);
+        socketRef.current?.emit("audio-chunk", arrayBuffer);
       }
     };
     // generate chunk every 1 second
@@ -48,7 +62,7 @@ export default function VoiceRecorder() {
 
     mediaRecorderRef.current.stop();
     setIsRecording(false);
-    socket.emit("recording-ended");
+    socketRef.current?.emit("recording-ended");
     console.log('stop recording')
   };
 

@@ -3,29 +3,25 @@ import { useState } from 'react';
 import { TextField, Button, Box, Typography, InputAdornment, IconButton, Divider } from '@mui/material';
 import { Visibility, VisibilityOff, Mic, AudioFile, GraphicEq, MicNone } from '@mui/icons-material';
 import { motion } from 'motion/react';
-import { useRouter } from 'next/navigation';
-import { useAppDispatch, useAppSelector } from '@/redux/hook';
-import { userLogin } from '@/redux/feature/auth/authAction';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useAppDispatch, useAppSelector } from '../../redux/hook';
+import { userSignup } from '@/redux/feature/auth/authAction';
 
 
-export default function Login() {
-
-  const dispatch = useAppDispatch()
+export default function Signup() {
+  const dispatch = useAppDispatch();
   const router = useRouter()
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { loading, user} = useAppSelector((state)=>state.auth)
+  const [name, setName]= useState('');
+  const [username,setUsername] = useState('')
+  const { loading, user } = useAppSelector((state)=>state.auth)
 
-  console.log(user)
-  const handleLogin = async(e: React.FormEvent) => {
+  const handleSingup = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Login attempt:', { email, password });
-    try {
-       dispatch(userLogin({email,password}))
-    } catch (err) {
-      
-    }
+    console.log('Login attempt:', { email, password, name, username });
+    dispatch(userSignup({name,username,email,password}))
   };
 
   return (
@@ -107,8 +103,63 @@ export default function Login() {
               </Typography>
             </Box>
 
-            <form onSubmit={handleLogin}>
-              <Box className="space-y-5 ">
+            <form onSubmit={handleSingup}>
+              <Box className="space-y-2 ">
+                <Box>
+                  <Typography variant="body2" className="text-gray-600 mb-2 font-medium">
+                    Name
+                  </Typography>
+                  <TextField
+                    fullWidth
+                    placeholder="Enter you name"
+                    type="text"
+                    variant="outlined"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    autoComplete="email"
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: '12px',
+                        backgroundColor: '#f9fafb',
+                        '&:hover fieldset': {
+                          borderColor: '#8b5cf6',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: '#8b5cf6',
+                        },
+                      },
+                    }}
+                  />
+                </Box>
+
+                <Box>
+                  <Typography variant="body2" className="text-gray-600 mb-2 font-medium">
+                    Username
+                  </Typography>
+                  <TextField
+                    fullWidth
+                    placeholder="enter unique username"
+                    type="text"
+                    variant="outlined"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                    autoComplete="email"
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: '12px',
+                        backgroundColor: '#f9fafb',
+                        '&:hover fieldset': {
+                          borderColor: '#8b5cf6',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: '#8b5cf6',
+                        },
+                      },
+                    }}
+                  />
+                </Box>
                 <Box>
                   <Typography variant="body2" className="text-gray-600 mb-2 font-medium">
                     Email address
@@ -221,9 +272,8 @@ export default function Login() {
                   size="large"
                   className="py-3.5 rounded-xl normal-case font-semibold border-gray-300"
                   onClick={()=>{
-                        window.location.href =
-                          "http://localhost:4000/api/google";
-                      }}
+                    window.location.href = 'http://localhost:4000/api/google'
+                  }}
                   sx={{
                     textTransform: 'none',
                     fontSize: '1rem',
@@ -245,9 +295,9 @@ export default function Login() {
 
                 <Box className="text-center pt-4">
                   <Typography variant="body2" className="text-gray-600">
-                    Don't have an account?{' '}
-                    <span onClick={()=>router.push('/signup')} className="text-violet-600 cursor-pointer hover:text-violet-700 font-semibold">
-                      Create account
+                    Already Have an Account?{' '}
+                    <span onClick={()=>router.push('/login')} className="text-violet-600 cursor-pointer hover:text-violet-700 font-semibold">
+                      Login
                     </span>
                   </Typography>
                 </Box>

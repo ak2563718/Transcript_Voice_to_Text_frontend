@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { ReactNode } from "react";
 type Props ={
@@ -10,6 +11,7 @@ export default function Pagelayout({children}:Props){
         <div>
             {children}
         </div>
+        <Footer/>
         </>
     )
 }

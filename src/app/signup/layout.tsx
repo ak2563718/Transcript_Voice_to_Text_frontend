@@ -3,7 +3,7 @@ import Navbar from "@/components/Navbar";
 import { ReactNode } from "react";
 
 type Props ={
-    children :ReactNode;
+    children : ReactNode;
 }
 
 export default function Pagelayout({children}:Props){

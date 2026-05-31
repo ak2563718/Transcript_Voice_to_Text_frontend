@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { userLogin, userLogout, userSignup } from "./authAction";
+import { check_session, userLogin, userLogout, userSignup } from "./authAction";
 
 interface AuthState {
     user: any;
@@ -7,6 +7,7 @@ interface AuthState {
     message: string | null;
     error: string | null;
     islogin: boolean;
+    accessToken: string |null;
 }
 
 const initialState: AuthState = {
@@ -15,6 +16,7 @@ const initialState: AuthState = {
     message: null,
     error: null,
     islogin: false,
+    accessToken:null,
 }
 
 const authSlice = createSlice({
@@ -46,6 +48,7 @@ const authSlice = createSlice({
                 state.user = action.payload.user;
                 state.message = action.payload.message;
                 state.islogin = true;
+                state.accessToken = action.payload.access;
             }).addCase(userLogin.rejected,(state,action)=>{
                 state.loading = false;
                 state.error = action.payload;
@@ -65,7 +68,23 @@ const authSlice = createSlice({
             }).addCase(userLogout.rejected,(state,action)=>{
                 state.loading = false;
                 state.error = action.payload;
-            })
+            });
+
+            // 4. Check session
+            builder.addCase(check_session.pending,(state)=>{
+                state.loading = true;
+                state.message = null;
+                state.error = null;
+            }).addCase(check_session.fulfilled,(state,action)=>{
+                state.loading = false;
+                state.message = action.payload.message;
+                state.accessToken = action.payload.access;
+                state.user = action.payload.user;
+                state.islogin = true;
+            }).addCase(check_session.rejected,(state,action)=>{
+                state.loading = false;
+                state.error = action.payload;
+            });
     }
 })
 

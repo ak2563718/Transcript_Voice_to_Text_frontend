@@ -1,13 +1,26 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const baseUri = `http://localhost:3000/api`
+interface LoginData{
+    email:string,
+    password:string,
+}
+
+interface signupData{
+    name:string,
+    username:string,
+    email:string,
+    password:string,
+}
+
+const baseUri = `http://localhost:4000/api`
 export const userLogin = createAsyncThunk(
     'user/Login',
-    async( user, {rejectWithValue})=>{
+    async( user:LoginData, {rejectWithValue})=>{
         try {
+            console.log("login data",user)
             const { data } = await axios.post(`${baseUri}/login`,user,{
-                headers:{'Content-Type':"application"},
+                headers:{'Content-Type':"application/json"},
                 withCredentials:true,
             })
             return data;
@@ -21,7 +34,7 @@ export const userLogin = createAsyncThunk(
 
 export const userSignup = createAsyncThunk(
     'user/Signup',
-    async( info , {rejectWithValue})=>{
+    async( info:signupData , {rejectWithValue})=>{
         try {
             const {data}= await axios.post(`${baseUri}/signup`,info,{
                 withCredentials:true,
