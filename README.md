@@ -1,36 +1,181 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎙️ TranscribX Frontend
 
-## Getting Started
+A modern voice-to-text transcription application built with Next.js. TranscribX allows users to record audio in real time, stream audio data through WebSockets, receive live transcriptions, and manage transcription history through an intuitive user interface.
 
-First, run the development server:
+---
+
+## 🚀 Features
+
+* 🎤 Real-time voice recording
+* ⚡ Live transcription using WebSockets
+* 🔐 Google OAuth Authentication
+* 🗂️ Transcript history management
+* 📥 Download recorded audio files
+* 🔄 State management with Redux Toolkit
+* 🌐 API communication using Axios
+* 📱 Responsive and modern UI
+* ⚡ Built with Next.js App Router
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend Framework
+
+* Next.js
+* React
+* TypeScript
+
+### State Management
+
+* Redux Toolkit
+* React Redux
+
+### Authentication
+
+* Google OAuth
+
+### Communication
+
+* WebSocket
+* Axios
+
+### Styling
+
+* Tailwind CSS
+
+### Icons
+
+* Lucide React
+
+---
+
+## 📂 Project Structure
+
+```bash
+src/
+├── app/
+├── components/
+├── redux/
+│   ├── feature/
+│   ├── store.ts
+│   └── hook.ts
+├── services/
+├── types/
+└── utils/
+```
+
+---
+
+## ⚙️ Installation
+
+Clone the repository:
+
+```bash
+git clone <your-frontend-repository-url>
+```
+
+Navigate into the project:
+
+```bash
+cd transcribx-frontend
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+---
+
+## 🔑 Environment Variables
+
+Create a `.env.local` file in the root directory:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:5000
+
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=YOUR_GOOGLE_CLIENT_ID
+```
+
+---
+
+## ▶️ Running the Application
+
+Development Server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Production Build:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🔄 Application Flow
 
-To learn more about Next.js, take a look at the following resources:
+1. User signs in using Google OAuth.
+2. Audio is captured from the microphone.
+3. Audio chunks are streamed through WebSocket.
+4. Backend processes audio and generates transcripts.
+5. Live transcript is displayed instantly.
+6. Final transcript and audio are saved.
+7. Users can view and manage transcription history.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📸 Screenshots
 
-## Deploy on Vercel
+Add screenshots of:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+* Home Page
+* Recording Interface
+* Live Transcript Screen
+* Transcript History Page
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🤝 Contributing
+
+Contributions are welcome.
+
+1. Fork the repository
+2. Create a feature branch
+
+```bash
+git checkout -b feature/new-feature
+```
+
+3. Commit changes
+
+```bash
+git commit -m "Add new feature"
+```
+
+4. Push changes
+
+```bash
+git push origin feature/new-feature
+```
+
+5. Create a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 👨‍💻 Author
+
+Akash Kumar
+
+GitHub: https://github.com/ak2563718
