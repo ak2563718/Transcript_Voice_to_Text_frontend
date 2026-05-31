@@ -33,7 +33,7 @@ const textSlice = createSlice({
             state.texts = action.payload.text;
         }).addCase(getallTranscript.rejected,(state,action)=>{
             state.loading = false;
-            state.error = action.payload;
+            state.error = action.payload as string;
         });
 
         //2 . get one text
@@ -47,7 +47,7 @@ const textSlice = createSlice({
             state.onetext = action.payload.text;
         }).addCase(getoneTranscript.rejected,(state,action)=>{
             state.loading = false
-            state.error = action.payload;
+            state.error = action.payload as string;
         });
 
         // 3. delete one text 

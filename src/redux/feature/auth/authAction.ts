@@ -28,6 +28,7 @@ export const userLogin = createAsyncThunk(
            if(axios.isAxiosError(error)){
             return rejectWithValue(error.response?.data?.message)
            }
+           return rejectWithValue("Something went wrong");
         }
     }
 )
@@ -45,6 +46,7 @@ export const userSignup = createAsyncThunk(
             if(axios.isAxiosError(error)){
                 return rejectWithValue(error.response?.data?.message)
             }
+            return rejectWithValue("Something went wrong");
         }
     }
 )
@@ -62,6 +64,7 @@ export const userLogout = createAsyncThunk(
            if(axios.isAxiosError(error)){
             return rejectWithValue(error.response?.data?.message)
            } 
+           return rejectWithValue("Something went wrong");
         }
     }
 )
@@ -79,6 +82,7 @@ export const check_session = createAsyncThunk(
             if(axios.isAxiosError(error)){
                 return rejectWithValue(error.response?.data?.message)
             }
+            return rejectWithValue("Something went wrong");
         }
     }
 )

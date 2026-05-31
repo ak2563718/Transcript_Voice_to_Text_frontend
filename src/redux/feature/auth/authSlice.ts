@@ -35,7 +35,7 @@ const authSlice = createSlice({
                 state.user = action.payload.user;
             }).addCase(userSignup.rejected,(state,action)=>{
                 state.loading = false;
-                state.error = action.payload;
+                state.error = action.payload as string;
             });
 
             // 2. Login user
@@ -51,7 +51,7 @@ const authSlice = createSlice({
                 state.accessToken = action.payload.access;
             }).addCase(userLogin.rejected,(state,action)=>{
                 state.loading = false;
-                state.error = action.payload;
+                state.error = action.payload as string;
                 state.islogin = false;
             });
 
@@ -67,7 +67,7 @@ const authSlice = createSlice({
                 state.user = {};
             }).addCase(userLogout.rejected,(state,action)=>{
                 state.loading = false;
-                state.error = action.payload;
+                state.error = action.payload as string;
             });
 
             // 4. Check session
@@ -83,7 +83,7 @@ const authSlice = createSlice({
                 state.islogin = true;
             }).addCase(check_session.rejected,(state,action)=>{
                 state.loading = false;
-                state.error = action.payload;
+                state.error = action.payload as string;
             });
     }
 })
